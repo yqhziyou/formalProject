@@ -5,12 +5,12 @@ import Message from './Message';
 const ChatWindow = ({ sessionID }) => {
     const [messages, setMessages] = useState([]);
     const [inputMessage, setInputMessage] = useState('');
-    const [models, setModels] = useState([]); // 存储模型列表
-    const [selectedModel, setSelectedModel] = useState(''); // 当前选择的模型
+    const [models, setModels] = useState([]); // store model list
+    const [selectedModel, setSelectedModel] = useState(''); // current selected model
 
-    // 获取模型列表
+    // fetch model list
     useEffect(() => {
-        // 这里添加获取模型列表的 API 调用
+        // add API call to fetch model list
         const fetchModels = async () => {
             try {
                 // const response = await getModels(); // 需要实现这个 API
@@ -25,13 +25,13 @@ const ChatWindow = ({ sessionID }) => {
         fetchModels();
     }, []);
 
-    // 获取历史聊天记录
+    // fetch chat history
     useEffect(() => {
         const fetchChatHistory = async () => {
             try {
                 // const response = await getChatHistory(sessionID); // 需要实现这个 API
                 // setMessages(response.data);
-                // 这里添加获取历史记录的 API 调用
+                // add API call to fetch chat history
             } catch (error) {
                 console.error('Error fetching chat history:', error);
             }
@@ -46,7 +46,7 @@ const ChatWindow = ({ sessionID }) => {
                     '6733b3dee8afaaffce1e0f73', // userID
                     sessionID || 'test2', // 使用传入的 sessionID
                     inputMessage,
-                    selectedModel // 使用选择的模型
+                    selectedModel // use selected model
                 );
 
                 const botMessage = response.data.data || response.data;
@@ -71,7 +71,7 @@ const ChatWindow = ({ sessionID }) => {
     return (
         <div style={{
             width: '80%',
-            maxWidth: '800px', // 增加最大宽度
+            maxWidth: '800px', // increase max width
             display: 'flex',
             flexDirection: 'column',
             height: '80vh',
@@ -105,9 +105,9 @@ const ChatWindow = ({ sessionID }) => {
                 flexDirection: 'column',
                 gap: '10px',
                 padding: '10px',
-                border: '1px solid #ccc', // 添加边框
+                border: '1px solid #ccc', // add border
                 borderRadius: '5px',
-                backgroundColor: '#f9f9f9' // 添加背景色
+                backgroundColor: '#f9f9f9' // add background color
             }}>
                 {messages.map((msg, index) => (
                     <Message key={index} sender={msg.sender} text={msg.text} />

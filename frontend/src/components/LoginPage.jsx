@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // 用于导航
+import { useNavigate } from 'react-router-dom'; // for navigation
 import { registerUser, loginUser } from '../services/apiService';
 
 const LoginPage = () => {
@@ -7,37 +7,37 @@ const LoginPage = () => {
     const [password, setPassword] = useState('');
     const [isRegistering, setIsRegistering] = useState(false);
     const [message, setMessage] = useState('');
-    const navigate = useNavigate(); // 初始化导航
+    const navigate = useNavigate(); // initialize navigation
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             if (isRegistering) {
-                // 注册逻辑
+                // registration logic
                 const result = await registerUser(username, password);
                 if (result.success) {
-                    setMessage('注册成功，请登录');
-                    setIsRegistering(false); // 注册成功后切换到登录模式
+                    setMessage('Registration successful, please login');
+                    setIsRegistering(false); // switch to login mode after successful registration
                 } else {
-                    setMessage(result.error || '注册失败');
+                    setMessage(result.error || 'Registration failed');
                 }
             } else {
-                // 登录逻辑
+                // login logic
                 const result = await loginUser(username, password);
                 console.log(result.data.success);
                 if (result.data.success) {
-                    setMessage('登录成功');
-                    // 存储用户信息或令牌（可选）
+                    setMessage('Login successful');
+                    // store user information or token (optional)
                     // localStorage.setItem('userToken', result.token);
-                    // 跳转到主页
-                    navigate('/home'); // 假设主页路径是 /home
+                    // navigate to home page
+                    navigate('/home'); // assume home page path is /home
                 } else {
-                    setMessage(result.error || '登录失败');
+                    setMessage(result.error || 'Login failed');
                 }
             }
         } catch (error) {
             console.error(error);
-            setMessage('操作失败，请检查输入的信息');
+            setMessage('Operation failed, please check the input information');
         }
     };
 
@@ -61,7 +61,7 @@ const LoginPage = () => {
                     {isRegistering ? 'Switch to Login' : 'Switch to Register'}
                 </button>
             </form>
-            {message && <p>{message}</p>} {/* 显示提示信息 */}
+            {message && <p>{message}</p>} {/* display prompt information */}
         </div>
     );
 };
