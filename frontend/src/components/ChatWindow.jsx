@@ -13,11 +13,11 @@ const ChatWindow = ({ sessionID }) => {
         // add API call to fetch model list
         const fetchModels = async () => {
             try {
-                // const response = await getModels(); // 需要实现这个 API
+                // const response = await getModels(); // need to implement this API
                 // setModels(response.data);
-                // 临时使用假数据
+                // temporarily use fake data
                 setModels(['gpt-3.5-turbo', 'gpt-4o-mini', 'claude-3']);
-                setSelectedModel('gpt-3.5-turbo'); // 设置默认模型
+                setSelectedModel('gpt-3.5-turbo'); // set default model
             } catch (error) {
                 console.error('Error fetching models:', error);
             }
@@ -29,7 +29,7 @@ const ChatWindow = ({ sessionID }) => {
     useEffect(() => {
         const fetchChatHistory = async () => {
             try {
-                // const response = await getChatHistory(sessionID); // 需要实现这个 API
+                // const response = await getChatHistory(sessionID); // need to implement this API
                 // setMessages(response.data);
                 // add API call to fetch chat history
             } catch (error) {
@@ -44,7 +44,7 @@ const ChatWindow = ({ sessionID }) => {
             try {
                 const response = await sendMessage(
                     '6733b3dee8afaaffce1e0f73', // userID
-                    sessionID || 'test2', // 使用传入的 sessionID
+                    sessionID || 'test2', // use sessionID
                     inputMessage,
                     selectedModel // use selected model
                 );
