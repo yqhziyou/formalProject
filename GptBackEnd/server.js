@@ -36,5 +36,5 @@ app.use('/api/users', UserRoutes);
 
 const PORT = config.backend || 5500;
 app.listen(PORT, () => {
-        console.log(`Server running on port ${PORT}`);
+        console.log(`Server running on port ${PORT}`); // running on the server of 5500.
 });
