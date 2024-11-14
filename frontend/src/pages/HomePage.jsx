@@ -6,6 +6,7 @@ import SessionList from '../components/SessionList';
 import { AuthContext } from '../Auth/AuthContext.jsx';
 import { pullInfo, sendMessage } from "../services/ApiService.js";
 import { v4 as uuidv4 } from 'uuid';
+import { Tools } from "../utlis/tools.jsx";
 
 
 function HomePage() {
@@ -67,6 +68,7 @@ function HomePage() {
     return (
         <div>
             <h1>Home Page</h1>
+            {data ? <Tools totalTokenUsage={data.totalTokenUsage} /> : <p>Loading token usage...</p>}
             <h2>hello, {username}</h2>
             {data && data.sessionIdList ? (
                 <SessionList userid={data._id} sessionData= {data.sessionIdList} onSelectSession={handleSessionSelect} />

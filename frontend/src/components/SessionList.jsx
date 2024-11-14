@@ -15,6 +15,7 @@ const SessionList = ({ sessionData: initialSessionData, onSelectSession, userid 
         try {
             await deleteChatHistory(userid, sessionId);
             console.log(`Session ${sessionId} deleted successfully`);
+            alert(`Session ${sessionId} deleted successfully`);
             // update the sessionData list
             setSessionData(prevData => prevData.filter(session => session._id !== sessionId));
         } catch (error) {

@@ -20,9 +20,11 @@ const LoginPage = () => {
                 const result = await registerUser(username, password);
                 if (result.success) {
                     setMessage('Registration successful, please login');
+                    alert('Registration successful, please login');
                     setIsRegistering(false); // switch to login mode after successful registration
                 } else {
                     setMessage(result.error || 'Registration failed');
+                    alert(result.error || 'Registration failed');
                 }
             } else {
                 // login logic
@@ -30,15 +32,18 @@ const LoginPage = () => {
                 console.log(result.data.success);
                 if (result.data.success) {
                     setMessage('Login successful');
+                    alert('Login successful');
                     setGlobalUsername(username);
                     navigate('/home');
                 } else {
                     setMessage(result.error || 'Login failed');
+                    alert(result.error || 'Login failed');
                 }
             }
         } catch (error) {
             console.error(error);
             setMessage('Operation failed, please check the input information');
+            alert('Operation failed, please check the input information');
         }
     };
 
