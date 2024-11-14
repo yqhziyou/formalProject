@@ -1,16 +1,15 @@
+// ChatWindow.jsx
 import { useState, useEffect } from 'react';
 import { sendMessage } from '../services/apiService';
 import Message from './Message';
 import styles from '../css/ChatWindow.module.css';
 
-const ChatWindow = () => {
-    const [messages, setMessages] = useState([]);
+const ChatWindow = ({ userinfo, session }) => {
+    const [messages, setMessages] = useState(session ? session.content : []);
     const [inputMessage, setInputMessage] = useState('');
     const [models, setModels] = useState([]);
     const [selectedModel, setSelectedModel] = useState('gpt-3.5-turbo');
 
-
-    // 获取模型列表
     useEffect(() => {
         const fetchModels = async () => {
             try {
@@ -21,13 +20,20 @@ const ChatWindow = () => {
         };
         fetchModels();
     }, []);
-    
+
+    useEffect(() => {
+        // 更新选中的会话内容
+        if (session) {
+            setMessages(session.content);
+        }
+    }, [session]);
+
     const handleSend = async () => {
         if (inputMessage.trim()) {
             try {
                 const response = await sendMessage(
-                    '6733b3dee8afaaffce1e0f73', // userID
-                    'test3',
+                    userinfo, // 使用用户ID
+                    session.sessionId, // 使用当前会话ID
                     inputMessage,
                     selectedModel
                 );
@@ -44,12 +50,10 @@ const ChatWindow = () => {
             }
         }
     };
-    
 
     return (
         <div className={styles.chatContainer}>
             <div className={styles.chatWindow}>
-                {/* 模型选择下拉菜单 */}
                 <select
                     value={selectedModel}
                     onChange={(e) => setSelectedModel(e.target.value)}
@@ -62,14 +66,12 @@ const ChatWindow = () => {
                     ))}
                 </select>
 
-                {/* 聊天记录显示区域 */}
                 <div className={styles.chatHistory}>
                     {messages.map((msg, index) => (
                         <Message key={index} sender={msg.sender} text={msg.text} />
                     ))}
                 </div>
 
-                {/* 输入区域 */}
                 <div className={styles.inputContainer}>
                     <input
                         type="text"
@@ -83,7 +85,6 @@ const ChatWindow = () => {
                         <button onClick={handleSend} className={styles.sendButton}>
                             Send
                         </button>
-                        
                     </div>
                 </div>
             </div>
