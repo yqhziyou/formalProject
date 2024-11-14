@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import {useContext, useState} from 'react';
 import { useNavigate } from 'react-router-dom'; // for navigation
 import { registerUser, loginUser } from '../services/apiService';
+import { AuthContext } from '../Auth/./AuthContext.jsx';
+
 
 const LoginPage = () => {
     const [username, setUsername] = useState('');
@@ -8,6 +10,7 @@ const LoginPage = () => {
     const [isRegistering, setIsRegistering] = useState(false);
     const [message, setMessage] = useState('');
     const navigate = useNavigate(); // initialize navigation
+    const { setUsername: setGlobalUsername } = useContext(AuthContext);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -27,10 +30,8 @@ const LoginPage = () => {
                 console.log(result.data.success);
                 if (result.data.success) {
                     setMessage('Login successful');
-                    // store user information or token (optional)
-                    // localStorage.setItem('userToken', result.token);
-                    // navigate to home page
-                    navigate('/home'); // assume home page path is /home
+                    setGlobalUsername(username);
+                    navigate('/home');
                 } else {
                     setMessage(result.error || 'Login failed');
                 }

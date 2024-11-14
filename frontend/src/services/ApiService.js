@@ -1,4 +1,4 @@
-import axios from 'axios';
+import.meta.env = {"BASE_URL": "/", "DEV": true, "MODE": "development", "PROD": false, "SSR": false, "VITE_API_URL": "http://localhost:5500/api"};import axios from "/node_modules/.vite/deps/axios.js?v=4688a0e9";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -15,7 +15,11 @@ export const sendMessage = async (userID, sessionID,message,selectedModel) => {
 };
 
 export const deleteChatHistory = async (userID, sessionId) => {
-    return axios.delete(`${API_URL}/user/remove-session`, {
-        params: { userID, sessionId }
-    });
+    return axios.post(`${API_URL}/users/remove-session`, { userID, sessionId });
 };
+
+export const pullInfo = async (username) => {
+    return await axios.get(`${API_URL}/info/getInfo/${username}`);
+};
+
+

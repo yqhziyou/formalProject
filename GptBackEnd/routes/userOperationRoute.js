@@ -16,7 +16,7 @@ router.post('/add-session', addSession);
 router.post('/remove-session', removeSession);
 
 // Route to show the session content
-router.get('getSessionContents', getSessionContents);
+router.get('/getSessionContents', getSessionContents);
 
 
 

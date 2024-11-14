@@ -1,0 +1,76 @@
+/* ChatWindow.module.css */
+
+.chatContainer {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.chatWindow {
+    width: 80%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    height: 80vh;
+}
+
+.modelSelect {
+    padding: 8px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.chatHistory {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.inputContainer {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+}
+
+.inputMessage {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.buttonContainer {
+    display: flex;
+    gap: 10px;
+}
+
+.sendButton {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.deleteButton {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}

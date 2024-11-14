@@ -1,11 +1,13 @@
 import express from 'express';
-import cors from 'cors'; // 引入cors包
+import cors from 'cors'; // 
 import config from "./config/config.js";
 import connectDB from "./config/db.js";
 import ModelRoutes from "./routes/modelRoutes.js";
 import MsgRoutes from "./routes/msgRoutes.js";
 import UserRoutes from "./routes/userOperationRoute.js";
 import initializeModels from "./services/initializeModelList.js";
+import newRoutes from "./routes/newRoutes.js";
+import User from "./models/userInfo.js";
 
 const app = express();
 
@@ -24,6 +26,7 @@ app.use(cors({ origin: '*' }));
 connectDB();
 initializeModels();
 
+
 // Use JSON middleware to handle JSON data
 app.use(express.json());
 
@@ -31,6 +34,9 @@ app.use(express.json());
 app.use('/api/models', ModelRoutes);
 app.use('/api/messages', MsgRoutes);
 app.use('/api/users', UserRoutes);
+app.use('/api/info', newRoutes);
+
+
 
 
 

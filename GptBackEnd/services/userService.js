@@ -79,6 +79,9 @@ export async function removeSessionFromUser(userId, sessionId) {
  * @param {String} userId - ID of the user
  * @returns {Object} Object containing all session contents or error message
  */
+
+
+
 export async function getUserSessionsContent(userId) {
     try {
         // 查找用户并关联填充sessionIdList中的Session文档

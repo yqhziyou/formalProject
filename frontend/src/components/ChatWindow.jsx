@@ -1,56 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import { sendMessage, deleteChatHistory } from '../services/apiService';
+import { useState, useEffect } from 'react';
+import { sendMessage } from '../services/apiService';
 import Message from './Message';
+import styles from '../css/ChatWindow.module.css';
 
-const ChatWindow = ({ sessionID }) => {
+const ChatWindow = () => {
     const [messages, setMessages] = useState([]);
     const [inputMessage, setInputMessage] = useState('');
-    const [models, setModels] = useState([]); // store model list
-    const [selectedModel, setSelectedModel] = useState(''); // current selected model
+    const [models, setModels] = useState([]);
+    const [selectedModel, setSelectedModel] = useState('gpt-3.5-turbo');
 
-    // fetch model list
+
+    // 获取模型列表
     useEffect(() => {
-        // add API call to fetch model list
         const fetchModels = async () => {
             try {
-                // const response = await getModels(); // need to implement this API
-                // setModels(response.data);
-                // temporarily use fake data
                 setModels(['gpt-3.5-turbo', 'gpt-4o-mini', 'claude-3']);
-                setSelectedModel('gpt-3.5-turbo'); // set default model
             } catch (error) {
                 console.error('Error fetching models:', error);
             }
         };
         fetchModels();
     }, []);
-
-    // fetch chat history
-    useEffect(() => {
-        const fetchChatHistory = async () => {
-            try {
-                // const response = await getChatHistory(sessionID); // need to implement this API
-                // setMessages(response.data);
-                // add API call to fetch chat history
-            } catch (error) {
-                console.error('Error fetching chat history:', error);
-            }
-        };
-        fetchChatHistory();
-    }, [sessionID]);
-
+    
     const handleSend = async () => {
         if (inputMessage.trim()) {
             try {
                 const response = await sendMessage(
                     '6733b3dee8afaaffce1e0f73', // userID
-                    sessionID || 'test2', // use sessionID
+                    'test3',
                     inputMessage,
-                    selectedModel // use selected model
+                    selectedModel
                 );
 
                 const botMessage = response.data.data || response.data;
-
                 setInputMessage('');
                 setMessages([
                     ...messages,
@@ -62,111 +44,47 @@ const ChatWindow = ({ sessionID }) => {
             }
         }
     };
-
-    const handleDeleteHistory = async () => {
-        await deleteChatHistory(sessionID);
-        setMessages([]);
-    };
+    
 
     return (
-        <div style={{
-            width: '80%',
-            maxWidth: '800px', // increase max width
-            display: 'flex',
-            flexDirection: 'column',
-            height: '80vh',
-            margin: '0 auto',
-            padding: '20px'
-        }}>
-            {/* 模型选择下拉菜单 */}
-            <select
-                value={selectedModel}
-                onChange={(e) => setSelectedModel(e.target.value)}
-                style={{
-                    padding: '8px',
-                    marginBottom: '10px',
-                    fontSize: '16px',
-                    borderRadius: '5px'
-                }}
-            >
-                {models.map((model) => (
-                    <option key={model} value={model}>
-                        {model}
-                    </option>
-                ))}
-            </select>
+        <div className={styles.chatContainer}>
+            <div className={styles.chatWindow}>
+                {/* 模型选择下拉菜单 */}
+                <select
+                    value={selectedModel}
+                    onChange={(e) => setSelectedModel(e.target.value)}
+                    className={styles.modelSelect}
+                >
+                    {models.map((model) => (
+                        <option key={model} value={model}>
+                            {model}
+                        </option>
+                    ))}
+                </select>
 
-            {/* 聊天记录显示区域 */}
-            <div style={{
-                flex: 1,
-                overflowY: 'auto',
-                marginBottom: '10px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '10px',
-                padding: '10px',
-                border: '1px solid #ccc', // add border
-                borderRadius: '5px',
-                backgroundColor: '#f9f9f9' // add background color
-            }}>
-                {messages.map((msg, index) => (
-                    <Message key={index} sender={msg.sender} text={msg.text} />
-                ))}
-            </div>
+                {/* 聊天记录显示区域 */}
+                <div className={styles.chatHistory}>
+                    {messages.map((msg, index) => (
+                        <Message key={index} sender={msg.sender} text={msg.text} />
+                    ))}
+                </div>
 
-            {/* 输入区域 */}
-            <div style={{
-                display: 'flex',
-                gap: '10px',
-                flexDirection: 'column'
-            }}>
-                <input
-                    type="text"
-                    value={inputMessage}
-                    onChange={(e) => setInputMessage(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-                    placeholder="Type a message..."
-                    style={{
-                        padding: '10px',
-                        fontSize: '16px',
-                        borderRadius: '5px',
-                        border: '1px solid #ccc'
-                    }}
-                />
-                <div style={{
-                    display: 'flex',
-                    gap: '10px'
-                }}>
-                    <button
-                        onClick={handleSend}
-                        style={{
-                            flex: 1,
-                            padding: '10px',
-                            fontSize: '16px',
-                            cursor: 'pointer',
-                            backgroundColor: '#007bff',
-                            color: 'white',
-                            border: 'none',
-                            borderRadius: '5px'
-                        }}
-                    >
-                        Send
-                    </button>
-                    <button
-                        onClick={handleDeleteHistory}
-                        style={{
-                            flex: 1,
-                            padding: '10px',
-                            fontSize: '16px',
-                            cursor: 'pointer',
-                            backgroundColor: '#dc3545',
-                            color: 'white',
-                            border: 'none',
-                            borderRadius: '5px'
-                        }}
-                    >
-                        Delete Chat History
-                    </button>
+                {/* 输入区域 */}
+                <div className={styles.inputContainer}>
+                    <input
+                        type="text"
+                        value={inputMessage}
+                        onChange={(e) => setInputMessage(e.target.value)}
+                        onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+                        placeholder="Type a message..."
+                        className={styles.inputMessage}
+                    />
+                    <div className={styles.buttonContainer}>
+                        <button onClick={handleSend} className={styles.sendButton}>
+                            Send
+                        </button>
+                        
+                    </div>
                 </div>
             </div>
         </div>
