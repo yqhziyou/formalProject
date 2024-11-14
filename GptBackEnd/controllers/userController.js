@@ -88,7 +88,7 @@ export async function removeSession(req, res) {
 
         return res.status(200).json({ success: true, user: result.user });
     } catch (error) {
-        console.error('Error removing session:', error);  // 记录服务器错误日志，便于调试
+        console.error('Error removing session:', error);  
         return res.status(500).json({ error: 'Internal server error' });
     }
 }
