@@ -14,8 +14,8 @@ export const sendMessage = async (userID, sessionID,message,selectedModel) => {
     return axios.post(`${API_URL}/messages/sendMessage`, { userID, sessionID,message,selectedModel });
 };
 
-export const deleteChatHistory = async (userID, sessionId) => {
-    return axios.post(`${API_URL}/users/remove-session`, { userID, sessionId });
+export const deleteChatHistory = async (userID, sessionID) => {
+    return axios.post(`${API_URL}/users/remove-session`, { userId: userID, sessionId: sessionID });
 };
 
 export const pullInfo = async (username) => {

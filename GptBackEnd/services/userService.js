@@ -84,17 +84,17 @@ export async function removeSessionFromUser(userId, sessionId) {
 
 export async function getUserSessionsContent(userId) {
     try {
-        // 查找用户并关联填充sessionIdList中的Session文档
+        // find the user and populate the sessionIdList with the Session documents
         const userWithSessions = await User.findById(userId).populate({
             path: 'sessionIdList',
-            select: 'content', // 仅选择需要的content字段
+            select: 'content', // only select the content field
         });
 
         if (!userWithSessions) {
             return { error: 'User not found' };
         }
 
-        // 提取每个Session的content字段
+        // extract the content field from each Session
         const sessionContents = userWithSessions.sessionIdList.map(session => session.content);
 
         return { success: true, content: sessionContents };

@@ -1,11 +1,25 @@
 import React, { useState } from 'react';
+import { deleteChatHistory } from "../services/ApiService.js";
 
-const SessionList = ({ sessionData, onSelectSession }) => {
+const SessionList = ({ sessionData: initialSessionData, onSelectSession, userid }) => {
+    const [sessionData, setSessionData] = useState(initialSessionData);
     const [selectedSession, setSelectedSession] = useState(null);
 
     const handleSelectSession = (session) => {
         setSelectedSession(session);
         onSelectSession(session);
+    };
+
+    
+    const handleDeleteSession = async (sessionId) => {
+        try {
+            await deleteChatHistory(userid, sessionId);
+            console.log(`Session ${sessionId} deleted successfully`);
+            // update the sessionData list
+            setSessionData(prevData => prevData.filter(session => session._id !== sessionId));
+        } catch (error) {
+            console.error(`Error deleting session ${sessionId}:`, error);
+        }
     };
 
     return (
@@ -33,7 +47,7 @@ const SessionList = ({ sessionData, onSelectSession }) => {
                             onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f9f9f9'}
                             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#ffffff'}>
                             <div>
-                                {/* 显示 Session ID */}
+                                {/* display Session ID */}
                                 <p style={{ fontSize: '14px', color: '#666' }}>
                                     <strong>Session ID:</strong> {session._id}
                                 </p>
@@ -67,7 +81,7 @@ const SessionList = ({ sessionData, onSelectSession }) => {
                                         }}
                                         onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#c82333'}
                                         onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#dc3545'}
-                                        onClick={() => console.log('Delete session:', session._id)}
+                                        onClick={() => handleDeleteSession(session._id)}
                                     >
                                         Delete
                                     </button>
@@ -76,26 +90,6 @@ const SessionList = ({ sessionData, onSelectSession }) => {
                         </li>
                     ))}
                 </ul>
-
-                <button
-                    style={{
-                        width: '100%',
-                        padding: '12px',
-                        backgroundColor: '#28a745',
-                        color: '#fff',
-                        border: 'none',
-                        borderRadius: '4px',
-                        cursor: 'pointer',
-                        fontSize: '16px',
-                        transition: 'background-color 0.3s',
-                        marginTop: '16px'
-                    }}
-                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#218838'}
-                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#28a745'}
-                    onClick={() => console.log('Start new session')}
-                >
-                    Start New Session
-                </button>
             </div>
 
             {selectedSession && (

@@ -43,4 +43,5 @@ app.use('/api/info', newRoutes);
 const PORT = config.backend || 5500;
 app.listen(PORT, () => {
         console.log(`Server running on port ${PORT}`);
+        
 });

@@ -26,7 +26,7 @@ router.post('/sendMessage', async (req, res) => {
         console.log("responseData", responseData);
 
         res.status(200).json({
-            message: "Message successfully sent",
+            message: "UnusedMessage successfully sent",
             data: responseData
         });
     } catch (error) {

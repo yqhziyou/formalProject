@@ -26,7 +26,7 @@ const ChatWindow = ({ userinfo, session }) => {
     }, []);
 
     useEffect(() => {
-        // 更新选中的会话内容
+        // update the messages with the session content
         if (session) {
             setMessages(session.content);
         }
@@ -42,7 +42,7 @@ const ChatWindow = ({ userinfo, session }) => {
             try {
                 const response = await sendMessage(
                     userinfo,
-                    session._id, // 使用当前会话ID
+                    session._id, // use the current session ID
                     inputMessage,
                     selectedModel
                 );

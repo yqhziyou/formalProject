@@ -77,20 +77,22 @@ export async function addSession(req, res) {
  * @param {Object} res - Express response object
  */
 export async function removeSession(req, res) {
-    const { userId, sessionId } = req.params;
+    const { userId, sessionId } = req.body;
 
     try {
         const result = await removeSessionFromUser(userId, sessionId);
 
-        if (result.error) {
-            return res.status(404).json({ error: result.error });
+        if (!result || result.error) {
+            return res.status(404).json({ error: result?.error || "Session not found" });
         }
 
         return res.status(200).json({ success: true, user: result.user });
     } catch (error) {
+        console.error('Error removing session:', error);  // 记录服务器错误日志，便于调试
         return res.status(500).json({ error: 'Internal server error' });
     }
 }
+
 
 /**
  * Controller to get all session contents for a specific user
