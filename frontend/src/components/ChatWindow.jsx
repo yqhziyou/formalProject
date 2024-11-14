@@ -4,12 +4,16 @@ import { sendMessage } from '../services/apiService';
 import Message from './Message';
 import styles from '../css/ChatWindow.module.css';
 
+
+
 const ChatWindow = ({ userinfo, session }) => {
     const [messages, setMessages] = useState(session ? session.content : []);
     const [inputMessage, setInputMessage] = useState('');
     const [models, setModels] = useState([]);
     const [selectedModel, setSelectedModel] = useState('gpt-3.5-turbo');
-
+  
+    
+    
     useEffect(() => {
         const fetchModels = async () => {
             try {
@@ -29,11 +33,16 @@ const ChatWindow = ({ userinfo, session }) => {
     }, [session]);
 
     const handleSend = async () => {
+        if (!session || !session._id) {
+            console.error("Session or session ID is missing.creating a new session");
+            return;
+        }
+
         if (inputMessage.trim()) {
             try {
                 const response = await sendMessage(
-                    userinfo, // 使用用户ID
-                    session.sessionId, // 使用当前会话ID
+                    userinfo,
+                    session._id, // 使用当前会话ID
                     inputMessage,
                     selectedModel
                 );

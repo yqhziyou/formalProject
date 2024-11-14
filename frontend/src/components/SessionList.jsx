@@ -1,6 +1,3 @@
-// SessionList.jsx
-import React from 'react';
-
 const SessionList = ({ sessionData, onSelectSession }) => {
     const sessions = sessionData || [
         {
@@ -9,7 +6,7 @@ const SessionList = ({ sessionData, onSelectSession }) => {
             tokenUsage: 1250,
             modelName: 'gpt-4',
             creationDate: new Date().toISOString(),
-            content: ["Hello!"]
+            content: [{ role: "user", content: "Hello!" }]
         },
         {
             _id: '2',
@@ -17,43 +14,96 @@ const SessionList = ({ sessionData, onSelectSession }) => {
             tokenUsage: 850,
             modelName: 'gpt-3.5',
             creationDate: new Date().toISOString(),
-            content: ["Hi there!"]
+            content: [{ role: "assistant", content: "Hi there!" }]
         }
     ];
 
     return (
-        <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
-            <div className="space-y-6">
-                <h2 className="text-2xl font-bold text-gray-900">Session List</h2>
+        <div style={{
+            maxWidth: '800px',
+            margin: '0 auto',
+            padding: '24px',
+            backgroundColor: '#ffffff',
+            borderRadius: '8px',
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
+        }}>
+            <div style={{ marginBottom: '24px' }}>
+                <h2 style={{ fontSize: '24px', fontWeight: 'bold', color: '#333' }}>Session List</h2>
 
-                <ul className="space-y-4">
+                <ul style={{ listStyle: 'none', padding: 0 }}>
                     {sessions.map((session) => (
-                        <li key={session._id} className="border rounded-lg p-4 hover:bg-gray-50 transition-colors">
-                            <div className="space-y-2">
-                                <div className="grid grid-cols-2 gap-4">
-                                    <p className="text-sm text-gray-600">
-                                        <span className="font-medium">Session ID:</span> {session.sessionId}
+                        <li key={session._id} style={{
+                            border: '1px solid #ddd',
+                            borderRadius: '8px',
+                            padding: '16px',
+                            marginBottom: '16px',
+                            transition: 'background-color 0.3s',
+                            cursor: 'pointer'
+                        }}
+                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f9f9f9'}
+                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#ffffff'}>
+                            <div>
+                                <div style={{
+                                    display: 'grid',
+                                    gridTemplateColumns: '1fr 1fr',
+                                    gap: '16px',
+                                    marginBottom: '16px'
+                                }}>
+                                    <p style={{ fontSize: '14px', color: '#666' }}>
+                                        <strong>Session ID:</strong> {session.sessionId}
                                     </p>
-                                    <p className="text-sm text-gray-600">
-                                        <span className="font-medium">Token Usage:</span> {session.tokenUsage}
+                                    <p style={{ fontSize: '14px', color: '#666' }}>
+                                        <strong>Token Usage:</strong> {session.tokenUsage}
                                     </p>
-                                    <p className="text-sm text-gray-600">
-                                        <span className="font-medium">Model Name:</span> {session.modelName}
+                                    <p style={{ fontSize: '14px', color: '#666' }}>
+                                        <strong>Model Name:</strong> {session.modelName}
                                     </p>
-                                    <p className="text-sm text-gray-600">
-                                        <span className="font-medium">Creation Date:</span> {new Date(session.creationDate).toLocaleString()}
+                                    <p style={{ fontSize: '14px', color: '#666' }}>
+                                        <strong>Creation Date:</strong> {new Date(session.creationDate).toLocaleString()}
                                     </p>
                                 </div>
 
-                                <div className="flex gap-3 mt-4">
+                                {/* 添加对content内容的显示 */}
+                                <div style={{ fontSize: '14px', color: '#666' }}>
+                                    <strong>Messages:</strong>
+                                    <ul style={{ listStyle: 'none', padding: 0 }}>
+                                        {session.content.map((message, index) => (
+                                            <li key={index}>
+                                                <strong>{message.role}:</strong> {message.content}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+
+                                <div style={{ display: 'flex', gap: '12px' }}>
                                     <button
-                                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+                                        style={{
+                                            padding: '8px 16px',
+                                            backgroundColor: '#007bff',
+                                            color: '#fff',
+                                            border: 'none',
+                                            borderRadius: '4px',
+                                            cursor: 'pointer',
+                                            transition: 'background-color 0.3s'
+                                        }}
+                                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#0056b3'}
+                                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#007bff'}
                                         onClick={() => onSelectSession(session)}
                                     >
                                         Open Session
                                     </button>
                                     <button
-                                        className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+                                        style={{
+                                            padding: '8px 16px',
+                                            backgroundColor: '#dc3545',
+                                            color: '#fff',
+                                            border: 'none',
+                                            borderRadius: '4px',
+                                            cursor: 'pointer',
+                                            transition: 'background-color 0.3s'
+                                        }}
+                                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#c82333'}
+                                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#dc3545'}
                                         onClick={() => console.log('Delete session:', session._id)}
                                     >
                                         Delete
@@ -65,7 +115,19 @@ const SessionList = ({ sessionData, onSelectSession }) => {
                 </ul>
 
                 <button
-                    className="w-full px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
+                    style={{
+                        width: '100%',
+                        padding: '12px',
+                        backgroundColor: '#28a745',
+                        color: '#fff',
+                        border: 'none',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                        fontSize: '16px',
+                        transition: 'background-color 0.3s'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#218838'}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#28a745'}
                     onClick={() => console.log('Start new session')}
                 >
                     Start New Session
