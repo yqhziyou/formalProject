@@ -1,22 +1,12 @@
+import React, { useState } from 'react';
+
 const SessionList = ({ sessionData, onSelectSession }) => {
-    const sessions = sessionData || [
-        {
-            _id: '1',
-            sessionId: 'sess_123456',
-            tokenUsage: 1250,
-            modelName: 'gpt-4',
-            creationDate: new Date().toISOString(),
-            content: [{ role: "user", content: "Hello!" }]
-        },
-        {
-            _id: '2',
-            sessionId: 'sess_789012',
-            tokenUsage: 850,
-            modelName: 'gpt-3.5',
-            creationDate: new Date().toISOString(),
-            content: [{ role: "assistant", content: "Hi there!" }]
-        }
-    ];
+    const [selectedSession, setSelectedSession] = useState(null);
+
+    const handleSelectSession = (session) => {
+        setSelectedSession(session);
+        onSelectSession(session);
+    };
 
     return (
         <div style={{
@@ -31,7 +21,7 @@ const SessionList = ({ sessionData, onSelectSession }) => {
                 <h2 style={{ fontSize: '24px', fontWeight: 'bold', color: '#333' }}>Session List</h2>
 
                 <ul style={{ listStyle: 'none', padding: 0 }}>
-                    {sessions.map((session) => (
+                    {sessionData.map((session) => (
                         <li key={session._id} style={{
                             border: '1px solid #ddd',
                             borderRadius: '8px',
@@ -43,39 +33,12 @@ const SessionList = ({ sessionData, onSelectSession }) => {
                             onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f9f9f9'}
                             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#ffffff'}>
                             <div>
-                                <div style={{
-                                    display: 'grid',
-                                    gridTemplateColumns: '1fr 1fr',
-                                    gap: '16px',
-                                    marginBottom: '16px'
-                                }}>
-                                    <p style={{ fontSize: '14px', color: '#666' }}>
-                                        <strong>Session ID:</strong> {session.sessionId}
-                                    </p>
-                                    <p style={{ fontSize: '14px', color: '#666' }}>
-                                        <strong>Token Usage:</strong> {session.tokenUsage}
-                                    </p>
-                                    <p style={{ fontSize: '14px', color: '#666' }}>
-                                        <strong>Model Name:</strong> {session.modelName}
-                                    </p>
-                                    <p style={{ fontSize: '14px', color: '#666' }}>
-                                        <strong>Creation Date:</strong> {new Date(session.creationDate).toLocaleString()}
-                                    </p>
-                                </div>
+                                {/* 显示 Session ID */}
+                                <p style={{ fontSize: '14px', color: '#666' }}>
+                                    <strong>Session ID:</strong> {session._id}
+                                </p>
 
-                                {/* 添加对content内容的显示 */}
-                                <div style={{ fontSize: '14px', color: '#666' }}>
-                                    <strong>Messages:</strong>
-                                    <ul style={{ listStyle: 'none', padding: 0 }}>
-                                        {session.content.map((message, index) => (
-                                            <li key={index}>
-                                                <strong>{message.role}:</strong> {message.content}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-
-                                <div style={{ display: 'flex', gap: '12px' }}>
+                                <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
                                     <button
                                         style={{
                                             padding: '8px 16px',
@@ -88,7 +51,7 @@ const SessionList = ({ sessionData, onSelectSession }) => {
                                         }}
                                         onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#0056b3'}
                                         onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#007bff'}
-                                        onClick={() => onSelectSession(session)}
+                                        onClick={() => handleSelectSession(session)}
                                     >
                                         Open Session
                                     </button>
@@ -124,7 +87,8 @@ const SessionList = ({ sessionData, onSelectSession }) => {
                         borderRadius: '4px',
                         cursor: 'pointer',
                         fontSize: '16px',
-                        transition: 'background-color 0.3s'
+                        transition: 'background-color 0.3s',
+                        marginTop: '16px'
                     }}
                     onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#218838'}
                     onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#28a745'}
@@ -133,6 +97,38 @@ const SessionList = ({ sessionData, onSelectSession }) => {
                     Start New Session
                 </button>
             </div>
+
+            {selectedSession && (
+                <div style={{
+                    padding: '24px',
+                    backgroundColor: '#f1f1f1',
+                    borderRadius: '8px',
+                    marginTop: '24px'
+                }}>
+                    <h3 style={{ fontSize: '20px', fontWeight: 'bold', color: '#333' }}>Selected Session Details</h3>
+                    <div style={{ fontSize: '14px', color: '#666' }}>
+                        <strong>Messages:</strong>
+                        <ul style={{ listStyle: 'none', padding: 0 }}>
+                            {selectedSession.content && selectedSession.content.length > 0 ? (
+                                selectedSession.content.map((message, index) => (
+                                    <li key={index} style={{
+                                        padding: '8px',
+                                        borderRadius: '4px',
+                                        backgroundColor: message.role === 'user' ? '#007bff' : '#28a745',
+                                        color: '#fff',
+                                        marginBottom: '8px',
+                                        textAlign: message.role === 'user' ? 'left' : 'right'
+                                    }}>
+                                        {message.content}
+                                    </li>
+                                ))
+                            ) : (
+                                <li>No messages yet</li>
+                            )}
+                        </ul>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
