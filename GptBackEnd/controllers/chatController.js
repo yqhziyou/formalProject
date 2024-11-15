@@ -1,3 +1,4 @@
+// Import the function that communicates with the AI service
 import generateAIResponse from "../services/chatService.js";
 
 
@@ -10,10 +11,12 @@ const messageHandler = async (userID, sessionID, message, selectedModel = "gpt-4
 
         console.log("all information loaded");
         console.log("send request from controller...");
+        // Log the details of the request: user, session, content, and model
         console.log(user, session, content, model);
 
         const reply = await generateAIResponse(user, session, content, model);
-
+    
+        // Check if a reply was received; if not, throw an error to handle the issue
         if (!reply) {
             throw new Error("No response received from AI service");
         }
