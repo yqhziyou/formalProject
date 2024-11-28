@@ -1,4 +1,5 @@
-import.meta.env = {"BASE_URL": "/", "DEV": true, "MODE": "development", "PROD": false, "SSR": false, "VITE_API_URL": "http://localhost:5500/api"};import axios from "/node_modules/.vite/deps/axios.js?v=4688a0e9";
+import.meta.env = {"BASE_URL": "/", "DEV": true, "MODE": "development", "PROD": false, "SSR": false, "VITE_API_URL": "http://localhost:5500/api"};
+import axios from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL;
 

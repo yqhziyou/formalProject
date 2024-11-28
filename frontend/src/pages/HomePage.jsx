@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom'; // 引入Link和useNavigate
 import ChatWindow from '../components/ChatWindow';
 import LoginPage from '../components/LoginPage';
 import Message from '../components/Message';
@@ -8,11 +9,11 @@ import { pullInfo, sendMessage } from "../services/ApiService.js";
 import { v4 as uuidv4 } from 'uuid';
 import { Tools } from "../utlis/tools.jsx";
 
-
 function HomePage() {
     const { username } = useContext(AuthContext);
     const [data, setData] = useState(null);
     const [selectedSession, setSelectedSession] = useState(null);
+    const navigate = useNavigate(); // 用于导航
 
     useEffect(() => {
         if (!username) return;
@@ -61,17 +62,28 @@ function HomePage() {
         setSelectedSession(session);
     };
 
+    const handleLogout = () => {
+        navigate('/'); // 跳转到登录页
+    };
+
     if (!username) {
         return <LoginPage />;
     }
 
     return (
         <div>
+            <nav>
+                <ul style={{ display: 'flex', justifyContent: 'space-around', listStyle: 'none', padding: '10px', backgroundColor: '#f4f4f4' }}>
+                    <li><Link to="/home">Home</Link></li>
+                    <li><Link to="/chat">Chat</Link></li>
+                    <li><button onClick={handleLogout} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}>Log Out</button></li>
+                </ul>
+            </nav>
             <h1>Home Page</h1>
             {data ? <Tools totalTokenUsage={data.totalTokenUsage} /> : <p>Loading token usage...</p>}
-            <h2>hello, {username}</h2>
+            <h2>Hello, {username}</h2>
             {data && data.sessionIdList ? (
-                <SessionList userid={data._id} sessionData= {data.sessionIdList} onSelectSession={handleSessionSelect} />
+                <SessionList userid={data._id} sessionData={data.sessionIdList} onSelectSession={handleSessionSelect} />
             ) : (
                 <p>Loading...</p>
             )}
